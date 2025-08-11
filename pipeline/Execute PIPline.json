@@ -3,6 +3,22 @@
 	"properties": {
 		"activities": [
 			{
+				"name": "Execute Pipeline2",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "managerPipline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
 				"name": "Execute Pipeline1",
 				"type": "ExecutePipeline",
 				"dependsOn": [
@@ -20,22 +36,6 @@
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "setvar",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "Execute Pipeline2",
-				"type": "ExecutePipeline",
-				"dependsOn": [],
-				"policy": {
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "managerPipline",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
