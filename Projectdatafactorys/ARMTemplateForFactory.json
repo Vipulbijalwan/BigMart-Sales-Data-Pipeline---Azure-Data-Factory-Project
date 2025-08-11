@@ -31,7 +31,24 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Execute Pipeline1",
+						"name": "Execute Pipeline2",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "managerPipline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute Pipeline3",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
@@ -53,23 +70,6 @@
 							"waitOnCompletion": true,
 							"parameters": {}
 						}
-					},
-					{
-						"name": "Execute Pipeline2",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"policy": {
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "managerPipline",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
 					}
 				],
 				"policy": {
@@ -78,8 +78,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/setvar')]",
-				"[concat(variables('factoryId'), '/pipelines/managerPipline')]"
+				"[concat(variables('factoryId'), '/pipelines/managerPipline')]",
+				"[concat(variables('factoryId'), '/pipelines/setvar')]"
 			]
 		},
 		{
@@ -277,14 +277,7 @@
 					{
 						"name": "Get Metadata",
 						"type": "GetMetadata",
-						"dependsOn": [
-							{
-								"activity": "Validation1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -510,7 +503,7 @@
 							"type": "Expression"
 						},
 						"folderPath": "csv_files",
-						"fileSystem": "source"
+						"fileSystem": "destination"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -538,11 +531,11 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"folderPath": "csv_files",
-						"fileSystem": "source"
+						"fileSystem": "destination"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
-					"firstRowAsHeader": true,
+					"firstRowAsHeader": false,
 					"quoteChar": "\""
 				},
 				"schema": []
@@ -835,13 +828,6 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "managerPipline",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
 					}
 				],
 				"type": "BlobEventsTrigger",
@@ -855,8 +841,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Execute PIPline')]",
-				"[concat(variables('factoryId'), '/pipelines/managerPipline')]"
+				"[concat(variables('factoryId'), '/pipelines/Execute PIPline')]"
 			]
 		},
 		{
