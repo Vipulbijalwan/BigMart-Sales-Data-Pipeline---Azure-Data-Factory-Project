@@ -9,12 +9,6 @@
 					"referenceName": "Execute PIPline",
 					"type": "PipelineReference"
 				}
-			},
-			{
-				"pipelineReference": {
-					"referenceName": "managerPipline",
-					"type": "PipelineReference"
-				}
 			}
 		],
 		"type": "BlobEventsTrigger",
