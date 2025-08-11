@@ -50,6 +50,12 @@
 				},
 				{
 					"name": "alterRow1"
+				},
+				{
+					"name": "alterRow2"
+				},
+				{
+					"name": "alterRow3"
 				}
 			],
 			"scriptLines": [
@@ -90,6 +96,8 @@
 				"     disjoint: false) ~> split1@(High, Medium, Small)",
 				"sort1 derive(Outlet_Size = coalesce(Outlet_Size,\"N/A\")) ~> derivedColumn1",
 				"split1@High alterRow(insertIf(1==1)) ~> alterRow1",
+				"split1@Medium alterRow(insertIf(1==1)) ~> alterRow2",
+				"split1@Small alterRow(insertIf(1==1)) ~> alterRow3",
 				"alterRow1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
@@ -97,14 +105,14 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sink",
-				"split1@Medium sink(allowSchemaDrift: true,",
+				"alterRow2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sink2",
-				"split1@Small sink(allowSchemaDrift: true,",
+				"alterRow3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
