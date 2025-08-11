@@ -15,6 +15,10 @@
 			"type": "string",
 			"defaultValue": "https://dataflowstoragevip.dfs.core.windows.net/"
 		},
+		"storageTrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/7d09f7e5-21d5-47a7-82db-f1560c909816/resourceGroups/Project_DataFlow/providers/Microsoft.Storage/storageAccounts/dataflowstoragevip"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -47,6 +51,9 @@
 					},
 					"ADLhttp_properties_typeProperties_url": {
 						"value": "[parameters('ADLhttp_properties_typeProperties_url')]"
+					},
+					"storageTrigger_properties_typeProperties_scope": {
+						"value": "[parameters('storageTrigger_properties_typeProperties_scope')]"
 					}
 				}
 			},

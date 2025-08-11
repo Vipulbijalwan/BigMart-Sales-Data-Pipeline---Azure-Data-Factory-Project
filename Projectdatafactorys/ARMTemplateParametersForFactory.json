@@ -10,6 +10,9 @@
 		},
 		"ADLhttp_properties_typeProperties_url": {
 			"value": "https://dataflowstoragevip.dfs.core.windows.net/"
+		},
+		"storageTrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/7d09f7e5-21d5-47a7-82db-f1560c909816/resourceGroups/Project_DataFlow/providers/Microsoft.Storage/storageAccounts/dataflowstoragevip"
 		}
 	}
 }
