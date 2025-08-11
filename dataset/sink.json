@@ -1,0 +1,23 @@
+{
+	"name": "sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLhttp",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "HIGH",
+				"fileSystem": "Outlet_Size"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

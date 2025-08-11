@@ -1,0 +1,117 @@
+{
+	"name": "dataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "dataflowsource",
+						"type": "DatasetReference"
+					},
+					"name": "sourceCSV"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "outlet_size",
+						"type": "DatasetReference"
+					},
+					"name": "sink"
+				},
+				{
+					"dataset": {
+						"referenceName": "sinkst",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				},
+				{
+					"dataset": {
+						"referenceName": "small",
+						"type": "DatasetReference"
+					},
+					"name": "sink3"
+				}
+			],
+			"transformations": [
+				{
+					"name": "select1"
+				},
+				{
+					"name": "sort1"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "alterRow1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Item_Identifier as string,",
+				"          Item_Weight as double,",
+				"          Item_Fat_Content as string,",
+				"          Item_Visibility as double,",
+				"          Item_Type as string,",
+				"          Item_MRP as double,",
+				"          Outlet_Identifier as string,",
+				"          Outlet_Establishment_Year as short,",
+				"          Outlet_Size as string,",
+				"          Outlet_Location_Type as string,",
+				"          Outlet_Type as string,",
+				"          Item_Outlet_Sales as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> sourceCSV",
+				"sourceCSV select(mapColumn(",
+				"          Item_Identifier,",
+				"          Item_Weight,",
+				"          Item_Fat_Content,",
+				"          Item_Visibility,",
+				"          Item_Type,",
+				"          Item_MRP,",
+				"          Outlet_Size,",
+				"          Outlet_Type,",
+				"          Item_Outlet_Sales",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sort(asc(Item_MRP, true)) ~> sort1",
+				"derivedColumn1 split(Outlet_Size==\"High\",",
+				"     Outlet_Size==\"Medium\",",
+				"     Outlet_Size==\"Small\",",
+				"     disjoint: false) ~> split1@(High, Medium, Small)",
+				"sort1 derive(Outlet_Size = coalesce(Outlet_Size,\"N/A\")) ~> derivedColumn1",
+				"split1@High alterRow(insertIf(1==1)) ~> alterRow1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink",
+				"split1@Medium sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink2",
+				"split1@Small sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink3"
+			]
+		}
+	}
+}

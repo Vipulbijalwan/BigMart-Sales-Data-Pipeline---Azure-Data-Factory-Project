@@ -1,0 +1,23 @@
+{
+	"name": "outlet_size",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLhttp",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "high",
+				"fileSystem": "outlet-size"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
