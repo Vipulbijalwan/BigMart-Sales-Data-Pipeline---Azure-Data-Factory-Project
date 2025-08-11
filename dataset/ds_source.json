@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "BigMart Sales.csv",
 				"folderPath": "csv_files",
 				"fileSystem": "source"
 			},
