@@ -1,0 +1,24 @@
+{
+	"name": "storageTrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "managerPipline",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/source/blobs/csv_files/BigMart Sales.csv",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/7d09f7e5-21d5-47a7-82db-f1560c909816/resourceGroups/Project_DataFlow/providers/Microsoft.Storage/storageAccounts/dataflowstoragevip",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
