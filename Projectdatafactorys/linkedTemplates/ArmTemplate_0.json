@@ -332,6 +332,34 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Vali')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLhttp",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "csv_files",
+						"fileSystem": "destination"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ADLhttp')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/managerPipline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -643,7 +671,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline')]",
+			"name": "[concat(parameters('factoryName'), '/setvar')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -651,7 +679,14 @@
 					{
 						"name": "Get Metadata",
 						"type": "GetMetadata",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Validation1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -818,6 +853,21 @@
 							},
 							"traceLevel": "Fine"
 						}
+					},
+					{
+						"name": "Validation1",
+						"type": "Validation",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Vali",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"timeout": "0.12:00:00",
+							"sleep": 10
+						}
 					}
 				],
 				"policy": {
@@ -833,8 +883,67 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/GetMeta_Data')]",
 				"[concat(variables('factoryId'), '/dataflows/dataflow')]",
+				"[concat(variables('factoryId'), '/datasets/Vali')]",
 				"[concat(variables('factoryId'), '/datasets/Destination')]",
 				"[concat(variables('factoryId'), '/datasets/big_data_folder')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Execute PIPline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Execute Pipeline2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "setvar",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute Pipeline2",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "managerPipline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/setvar')]",
+				"[concat(variables('factoryId'), '/pipelines/managerPipline')]"
 			]
 		},
 		{
@@ -847,7 +956,7 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "managerPipline",
+							"referenceName": "Execute PIPline",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
@@ -864,7 +973,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/managerPipline')]"
+				"[concat(variables('factoryId'), '/pipelines/Execute PIPline')]"
 			]
 		}
 	]
