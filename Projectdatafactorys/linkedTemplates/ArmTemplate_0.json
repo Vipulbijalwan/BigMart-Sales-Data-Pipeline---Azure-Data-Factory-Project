@@ -261,6 +261,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": "output",
 						"folderPath": "high",
 						"fileSystem": "outlet-size"
 					},
@@ -317,6 +318,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": "output",
 						"folderPath": "medium",
 						"fileSystem": "outlet-size"
 					},
@@ -345,6 +347,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": "output",
 						"folderPath": "small",
 						"fileSystem": "outlet-size"
 					},
@@ -637,6 +640,7 @@
 						"sort1 derive(Outlet_Size = coalesce(Outlet_Size,\"N/A\")) ~> derivedColumn1",
 						"split1@High sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     truncate: true,",
 						"     umask: 0022,",
 						"     preCommands: [],",
 						"     postCommands: [],",
@@ -844,8 +848,8 @@
 							},
 							"staging": {},
 							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
+								"coreCount": 32,
+								"computeType": "MemoryOptimized"
 							},
 							"traceLevel": "Fine"
 						}
