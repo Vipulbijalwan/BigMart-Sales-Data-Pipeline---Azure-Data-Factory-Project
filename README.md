@@ -43,3 +43,10 @@ The pipeline runs only when the required file is detected, processes it, and cat
 ---
 
 ## 📂 Folder Structure
+source/
+BigMart Sales.csv
+destination/
+BigMart Sales.csv
+outlet_small.csv
+outlet_medium.csv
+outlet_high.csv
