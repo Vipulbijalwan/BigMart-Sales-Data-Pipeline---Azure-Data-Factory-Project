@@ -1,5 +1,5 @@
 {
-	"name": "Execute PIPline",
+	"name": "Combine Pipeline",
 	"properties": {
 		"activities": [
 			{
@@ -12,7 +12,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "managerPipline",
+						"referenceName": "Copy Data",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -35,7 +35,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "setvar",
+						"referenceName": "Get File and Transformation",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true

@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "Execute PIPline",
+					"referenceName": "Combine Pipeline",
 					"type": "PipelineReference"
 				}
 			}
