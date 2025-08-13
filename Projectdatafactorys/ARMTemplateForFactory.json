@@ -25,7 +25,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/Execute PIPline')]",
+			"name": "[concat(parameters('factoryName'), '/Combine Pipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -40,7 +40,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "managerPipline",
+								"referenceName": "Copy Data",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -64,7 +64,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "setvar",
+								"referenceName": "Get File and Transformation",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -79,12 +79,12 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/managerPipline')]",
-				"[concat(variables('factoryId'), '/pipelines/setvar')]"
+				"[concat(variables('factoryId'), '/pipelines/Copy Data')]",
+				"[concat(variables('factoryId'), '/pipelines/Get File and Transformation')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/managerPipline')]",
+			"name": "[concat(parameters('factoryName'), '/Copy Data')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -194,83 +194,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Get Metadata",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "GetMeta_Data",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobFSReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					},
-					{
-						"name": "Set variable1",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "var_files",
-							"value": {
-								"value": "@activity('Get Metadata').output.childItems",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"variables": {
-					"var_files": {
-						"type": "Array"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/GetMeta_Data')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/setvar')]",
+			"name": "[concat(parameters('factoryName'), '/Get File and Transformation')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -835,7 +759,7 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "Execute PIPline",
+							"referenceName": "Combine Pipeline",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
@@ -852,7 +776,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Execute PIPline')]"
+				"[concat(variables('factoryId'), '/pipelines/Combine Pipeline')]"
 			]
 		},
 		{
