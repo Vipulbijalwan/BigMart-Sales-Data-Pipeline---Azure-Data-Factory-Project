@@ -37,7 +37,7 @@ The pipeline runs only when the required file is detected, processes it, and cat
 
 ## ⚙ Technologies Used
 - **Azure Data Factory**
-- **Azure Blob Storage**
+- **Azure Lake Storage**
 - **Data Flow Activities** in ADF
 
 ---
